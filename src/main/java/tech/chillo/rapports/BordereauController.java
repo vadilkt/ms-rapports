@@ -22,13 +22,18 @@ public class BordereauController {
 
     private final BordereauService service;
 
-
     @GetMapping(produces = APPLICATION_JSON_VALUE)
     public List<Bordereau> search() {
         return this.service.search();
     }
 
     @GetMapping(path = "{id}")
+    public Bordereau read(@PathVariable final int id) {
+
+        return this.service.read(id);
+    }
+
+    @GetMapping(path = "{id}/generate")
     public ResponseEntity<byte[]> exportReport(@PathVariable final int id, @RequestParam(name = "format", defaultValue = "pdf") final String format) throws JRException, IOException {
 
         final byte[] content = this.service.exportReport(id, format);

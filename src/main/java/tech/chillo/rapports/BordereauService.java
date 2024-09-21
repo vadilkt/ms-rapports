@@ -5,7 +5,9 @@ import lombok.AllArgsConstructor;
 import net.sf.jasperreports.engine.*;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import net.sf.jasperreports.engine.export.JRPdfExporter;
+import net.sf.jasperreports.engine.export.ooxml.JRDocxExporter;
 import net.sf.jasperreports.engine.util.JRSaver;
+import net.sf.jasperreports.export.SimpleDocxReportConfiguration;
 import net.sf.jasperreports.export.SimpleExporterInput;
 import net.sf.jasperreports.export.SimpleOutputStreamExporterOutput;
 import net.sf.jasperreports.export.SimplePdfExporterConfiguration;
@@ -40,7 +42,7 @@ public class BordereauService {
 
         final Bordereau bordereau = this.repository
                 .findById(id)
-                .orElseThrow(() -> new EntityNotFoundException(format("Aucune entreprise ne correspond à %s", id)));
+                .orElseThrow(() -> new EntityNotFoundException(format("Aucun bordereau ne correspond à %s", id)));
         List<Courrier> courriers = bordereau.getCourriers();
         List<Object[]> pj = pjRepository.print(id);
 
@@ -69,10 +71,25 @@ public class BordereauService {
         if (format.equalsIgnoreCase("xml")) {
             JasperExportManager.exportReportToXmlFile(jasperPrint, "classpath:liste-courriers.xml", true);
         }
+        if(format.equalsIgnoreCase("word")){
+            JRDocxExporter docxExporter = new JRDocxExporter();
+            docxExporter.setExporterInput(new SimpleExporterInput(jasperPrint));
+            docxExporter.setExporterOutput(new SimpleOutputStreamExporterOutput("classpath:liste-courriers.word"));
+            SimpleDocxReportConfiguration docxConfiguration = new SimpleDocxReportConfiguration();
+            docxConfiguration.setFlexibleRowHeight(true);
+            docxExporter.setConfiguration(docxConfiguration);
+            docxExporter.exportReport();
+        }
 
         final File f = new File("classpath:liste-courriers.pdf");
 
         return FileUtils.readFileToByteArray(f);
+    }
+
+    public Bordereau read(final int id) {
+        return this.repository
+                .findById(id)
+                .orElseThrow(() -> new EntityNotFoundException(format("Aucun bordereau ne correspond à %s", id)));
     }
 
 }

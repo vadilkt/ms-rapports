@@ -218,18 +218,18 @@
 	<detail>
 		<band height="21" splitType="Stretch">
 			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
-				<reportElement positionType="Float" x="385" y="5" width="160" height="15" uuid="baf46be5-2152-4381-bc77-c95dd74062d0">
+				<reportElement positionType="Float" x="380" y="1" width="160" height="15" uuid="baf46be5-2152-4381-bc77-c95dd74062d0">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					<property name="com.jaspersoft.studio.unit.y" value="px"/>
 				</reportElement>
 				<box leftPadding="1"/>
-				<textElement textAlignment="Left">
+				<textElement textAlignment="Left" verticalAlignment="Middle">
 					<font size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{pieceJointe.dossier}]]></textFieldExpression>
 			</textField>
 			<rectangle>
-				<reportElement positionType="Float" mode="Opaque" x="131" y="5" width="16" height="6" backcolor="#FFFFFF" uuid="b47520d7-4489-4c27-aee2-6283ddf02424">
+				<reportElement positionType="Float" mode="Opaque" x="136" y="5" width="11" height="6" backcolor="#FFFFFF" uuid="b47520d7-4489-4c27-aee2-6283ddf02424">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
 				</reportElement>
@@ -238,7 +238,7 @@
 				</graphicElement>
 			</rectangle>
 			<rectangle>
-				<reportElement positionType="Float" mode="Opaque" x="365" y="5" width="16" height="6" backcolor="#FFFFFF" uuid="ec96c130-e884-4f9a-8958-20afcc27894b">
+				<reportElement positionType="Float" mode="Opaque" x="365" y="5" width="11" height="6" backcolor="#FFFFFF" uuid="ec96c130-e884-4f9a-8958-20afcc27894b">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
 					<printWhenExpression><![CDATA[$F{pieceJointe.dossier} != null]]></printWhenExpression>
@@ -248,11 +248,11 @@
 				</graphicElement>
 			</rectangle>
 			<textField textAdjust="StretchHeight">
-				<reportElement positionType="Float" x="150" y="5" width="200" height="15" uuid="26cdd3d4-70b9-4589-8d2f-6e32dbc2d3f6">
+				<reportElement positionType="Float" x="150" y="1" width="200" height="15" uuid="26cdd3d4-70b9-4589-8d2f-6e32dbc2d3f6">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
 				<box leftPadding="1"/>
-				<textElement textAlignment="Left">
+				<textElement textAlignment="Left" verticalAlignment="Middle">
 					<font size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{pieceJointe.libelle} == null ? "Aucune pièce jointe"  : $F{pieceJointe.libelle}]]></textFieldExpression>
