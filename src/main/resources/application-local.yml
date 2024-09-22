@@ -1,0 +1,11 @@
+logging:
+  level:
+    tech.chillo: TRACE
+spring:
+  datasource:
+    url: jdbc:mysql://localhost:3307/rapports
+    username: root
+    password: rapports
+  jpa:
+    hibernate:
+      ddl-auto: validate
