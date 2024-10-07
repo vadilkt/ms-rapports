@@ -5,12 +5,11 @@ import lombok.AllArgsConstructor;
 import net.sf.jasperreports.engine.*;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import net.sf.jasperreports.engine.export.JRPdfExporter;
+import net.sf.jasperreports.engine.export.JRXlsExporter;
 import net.sf.jasperreports.engine.export.ooxml.JRDocxExporter;
+import net.sf.jasperreports.engine.export.ooxml.JRXlsxExporter;
 import net.sf.jasperreports.engine.util.JRSaver;
-import net.sf.jasperreports.export.SimpleDocxReportConfiguration;
-import net.sf.jasperreports.export.SimpleExporterInput;
-import net.sf.jasperreports.export.SimpleOutputStreamExporterOutput;
-import net.sf.jasperreports.export.SimplePdfExporterConfiguration;
+import net.sf.jasperreports.export.*;
 import org.apache.commons.io.FileUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ResourceUtils;
@@ -72,13 +71,28 @@ public class BordereauService {
             JasperExportManager.exportReportToXmlFile(jasperPrint, "classpath:liste-courriers.xml", true);
         }
         if(format.equalsIgnoreCase("word")){
+            File tempFile = File.createTempFile("Liste-Courriers",".docx");
             JRDocxExporter docxExporter = new JRDocxExporter();
             docxExporter.setExporterInput(new SimpleExporterInput(jasperPrint));
-            docxExporter.setExporterOutput(new SimpleOutputStreamExporterOutput("classpath:liste-courriers.word"));
+            docxExporter.setExporterOutput(new SimpleOutputStreamExporterOutput(tempFile));
             SimpleDocxReportConfiguration docxConfiguration = new SimpleDocxReportConfiguration();
             docxConfiguration.setFlexibleRowHeight(true);
             docxExporter.setConfiguration(docxConfiguration);
             docxExporter.exportReport();
+            return FileUtils.readFileToByteArray(tempFile);
+        }
+        if(format.equalsIgnoreCase("excel")){
+            File tempFile = File.createTempFile("Liste-Courriers", ".xlsx");
+            JRXlsxExporter exporter = new JRXlsxExporter();
+            exporter.setExporterInput(new SimpleExporterInput(jasperPrint));
+            SimpleXlsxReportConfiguration configuration = new SimpleXlsxReportConfiguration();
+            configuration.setOnePagePerSheet(true);
+            configuration.setDetectCellType(true);
+            configuration.setCollapseRowSpan(false);
+            exporter.setConfiguration(configuration);
+            exporter.setExporterOutput(new SimpleOutputStreamExporterOutput(tempFile));
+            exporter.exportReport();
+            return FileUtils.readFileToByteArray(tempFile);
         }
 
         final File f = new File("classpath:liste-courriers.pdf");

@@ -38,10 +38,38 @@ public class BordereauController {
 
         final byte[] content = this.service.exportReport(id, format);
         final HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_PDF);
-        // Here you have to set the actual filename of your pdf
-        final String filename = "output.pdf";
-        headers.setContentDispositionFormData(filename, filename);
+
+        switch (format.toLowerCase()){
+            case "pdf":
+                headers.setContentType(MediaType.APPLICATION_PDF);
+                break;
+            case "word":
+                headers.setContentType(MediaType.valueOf("application/vnd.openxmlformats-officedocument.wordprocessingml.document"));
+                break;
+            case "excel":
+                headers.setContentType(MediaType.valueOf("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"));
+                break;
+            case "html":
+                headers.setContentType(MediaType.TEXT_HTML);
+                break;
+            case "xml":
+                headers.setContentType(MediaType.APPLICATION_XML);
+                break;
+            default:
+                headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
+                break;
+        }
+
+        final String extension = switch (format.toLowerCase()){
+            case "pdf"->"pdf";
+            case "word"->"docx";
+            case "excel"->"xlsx";
+            case "html"->"html";
+            case "xml"->"xml";
+            default -> "bin";
+        };
+        final String filename ="bordereau-"+id+"."+extension;
+        headers.setContentDispositionFormData("inline", filename);
         headers.setCacheControl("must-revalidate, post-check=0, pre-check=0");
         return new ResponseEntity<>(content, headers, HttpStatus.OK);
     }
